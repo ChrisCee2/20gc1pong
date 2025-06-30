@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://bopsmkb6xxr4w"]
+
+[ext_resource type="PackedScene" uid="uid://b53hcff8gnb10" path="res://paddle.tscn" id="1_pq8q7"]
+[ext_resource type="PackedScene" uid="uid://dit4mko8nly5r" path="res://InputMachines/CharacterInput.tscn" id="2_pyidc"]
+
+[node name="Root" type="Node2D"]
+
+[node name="Paddle" parent="." node_paths=PackedStringArray("characterInput") instance=ExtResource("1_pq8q7")]
+position = Vector2(-70, 0)
+characterInput = NodePath("CharacterInput")
+
+[node name="CharacterInput" parent="Paddle" instance=ExtResource("2_pyidc")]
+upKey = "paddle_up_1"
+downKey = "paddle_down_1"
+
+[node name="Paddle1" parent="." node_paths=PackedStringArray("characterInput") instance=ExtResource("1_pq8q7")]
+position = Vector2(70, 0)
+characterInput = NodePath("CharacterInput")
+
+[node name="CharacterInput" parent="Paddle1" instance=ExtResource("2_pyidc")]
+upKey = "paddle_up_2"
+downKey = "paddle_down_2"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(7, 7)
