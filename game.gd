@@ -6,13 +6,16 @@ class_name Game extends Node
 @export var scores: Node
 
 var is_started = false
-var score: Dictionary = {"Player1": 0, "Player2": 0}
+var initial_score: Dictionary = {"Player1": 0, "Player2": 0}
+var score: Dictionary = initial_score.duplicate()
 
 func _ready() -> void:
-	is_started = true
-	update_scores()
+	reset()
 
 func update() -> void:
+	if Input.is_action_just_released("reset"):
+		reset()
+	
 	var bound: int = arena.isOutOfBoundsX(ball.global_position, ball.getSize())
 	if bound == 0:
 		return
@@ -34,3 +37,9 @@ func update_scores():
 			var label = child.get_child(0)
 			if label is Label:
 				label.text = str(score[control_name])
+
+func reset():
+	restart_round(randf() < 0.5)
+	is_started = true
+	score = initial_score.duplicate()
+	update_scores()
