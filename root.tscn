@@ -9,28 +9,33 @@
 [node name="Root" type="Node2D"]
 script = ExtResource("1_jnlp7")
 
-[node name="Paddle" parent="." node_paths=PackedStringArray("characterInput", "arena") instance=ExtResource("1_pq8q7")]
-position = Vector2(-70, 0)
-characterInput = NodePath("CharacterInput")
-arena = NodePath("../Arena")
-
-[node name="CharacterInput" parent="Paddle" instance=ExtResource("2_pyidc")]
-upKey = "paddle_up_1"
-downKey = "paddle_down_1"
-
-[node name="Paddle1" parent="." node_paths=PackedStringArray("characterInput", "arena") instance=ExtResource("1_pq8q7")]
-position = Vector2(70, 0)
-characterInput = NodePath("CharacterInput")
-arena = NodePath("../Arena")
-
-[node name="CharacterInput" parent="Paddle1" instance=ExtResource("2_pyidc")]
-upKey = "paddle_up_2"
-downKey = "paddle_down_2"
-
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(7, 7)
 
 [node name="Arena" parent="." instance=ExtResource("3_vvh5c")]
 
-[node name="Ball" parent="." node_paths=PackedStringArray("arena") instance=ExtResource("4_28aoi")]
+[node name="Ball" parent="." node_paths=PackedStringArray("paddles", "arena") instance=ExtResource("4_28aoi")]
+paddles = NodePath("../Paddles")
 arena = NodePath("../Arena")
+start_speed = 1.0
+
+[node name="Paddles" type="Node" parent="."]
+
+[node name="Paddle" parent="Paddles" node_paths=PackedStringArray("characterInput", "arena") instance=ExtResource("1_pq8q7")]
+position = Vector2(-70, 0)
+isLeft = true
+characterInput = NodePath("CharacterInput")
+arena = NodePath("../../Arena")
+
+[node name="CharacterInput" parent="Paddles/Paddle" instance=ExtResource("2_pyidc")]
+upKey = "paddle_up_1"
+downKey = "paddle_down_1"
+
+[node name="Paddle1" parent="Paddles" node_paths=PackedStringArray("characterInput", "arena") instance=ExtResource("1_pq8q7")]
+position = Vector2(70, 0)
+characterInput = NodePath("CharacterInput")
+arena = NodePath("../../Arena")
+
+[node name="CharacterInput" parent="Paddles/Paddle1" instance=ExtResource("2_pyidc")]
+upKey = "paddle_up_2"
+downKey = "paddle_down_2"

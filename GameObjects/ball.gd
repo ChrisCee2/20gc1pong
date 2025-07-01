@@ -1,5 +1,6 @@
 class_name Ball extends StaticBody2D
 
+@export var paddles: Node
 @export var arena: Arena
 @export var start_speed: float = 1.0
 
@@ -8,9 +9,10 @@ class_name Ball extends StaticBody2D
 var isActive: bool = false
 var current_speed: float = start_speed
 var velocity: Vector2 = Vector2.ZERO
-
+var paddlesBeingCollidedWith: Array[Paddle] = []
 
 func start(shouldStartLeft: bool) -> void:
+	paddlesBeingCollidedWith = []
 	var start_position: Vector2 = Vector2.ZERO
 	if arena:
 		start_position = arena.global_position
@@ -32,7 +34,12 @@ func update(distance_from_lower_bound: float, distance_from_upper_bound: float) 
 	if not isActive:
 		return
 	
+	# Paddle bounce logic
+	handlePaddleBounce()
+	
 	var curr_velocity = velocity
+	
+	# Wall bounce logic
 	if distance_from_lower_bound <= 0 || distance_from_upper_bound <= 0:
 		velocity *= Vector2(1.0, -1.0)
 		velocity = velocity.normalized() * current_speed
@@ -54,6 +61,21 @@ func getBounceVelocity() -> Vector2:
 
 func getSize() -> Vector2:
 	return sprite.scale
+
+func isBallOverlappingPaddle(paddle: Paddle) -> bool:
+	return paddle.global_position.x + (paddle.getSize().x / 2) >= global_position.x - (getSize().x / 2) && \
+	paddle.global_position.x - (paddle.getSize().x / 2) <= global_position.x + (getSize().x / 2) && \
+	paddle.global_position.y + (paddle.getSize().y / 2) >= global_position.y - (getSize().y / 2) && \
+	paddle.global_position.y - (paddle.getSize().y / 2) <= global_position.y + (getSize().y / 2)
+
+func handlePaddleBounce() -> void:
+	var collidingPaddles: Array[Paddle] = []
+	for paddle in paddles.get_children():
+		if paddle is Paddle and isBallOverlappingPaddle(paddle):
+			collidingPaddles.append(paddle)
+			if paddle not in paddlesBeingCollidedWith:
+				velocity *= Vector2(-1, 1)
+	paddlesBeingCollidedWith = collidingPaddles
 
 func getDistanceFromUpperBound() -> float:
 	if not arena:

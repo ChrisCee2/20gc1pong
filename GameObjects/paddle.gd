@@ -1,5 +1,6 @@
 class_name Paddle extends StaticBody2D
 
+@export var isLeft: bool
 @export var characterInput: CharacterInput
 @export var arena: Arena
 @onready var controller = $CharacterController
