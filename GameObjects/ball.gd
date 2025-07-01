@@ -74,7 +74,11 @@ func handlePaddleBounce() -> void:
 		if paddle is Paddle and isBallOverlappingPaddle(paddle):
 			collidingPaddles.append(paddle)
 			if paddle not in paddlesBeingCollidedWith:
-				velocity *= Vector2(-1, 1)
+				var direction_x = 1 if velocity.x < 0 else -1
+				var angle = deg_to_rad(paddle.getBounceAngle(global_position))
+				var x = cos(angle)
+				var y = sin(angle)
+				velocity = Vector2(direction_x * x, y) * start_speed
 	paddlesBeingCollidedWith = collidingPaddles
 
 func getDistanceFromUpperBound() -> float:
