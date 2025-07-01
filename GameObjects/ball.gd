@@ -6,10 +6,18 @@ class_name Ball extends StaticBody2D
 
 @onready var sprite: Sprite2D = $Sprite2D
 
-var isActive: bool = false
+var is_active: bool = false
 var current_speed: float = start_speed
 var velocity: Vector2 = Vector2.ZERO
 var paddlesBeingCollidedWith: Array[Paddle] = []
+
+func start():
+	is_active = true
+	show()
+
+func end():
+	is_active = false
+	hide()
 
 func restart(shouldStartLeft: bool) -> void:
 	paddlesBeingCollidedWith = []
@@ -21,7 +29,7 @@ func restart(shouldStartLeft: bool) -> void:
 	var x = cos(angle) * (-1 if shouldStartLeft else 1)
 	var y = sin(angle) * (-1 if randf() < 0.5 else 1)
 	velocity = start_speed * Vector2(x, y).normalized()
-	isActive = true
+	start()
 	current_speed = start_speed
 
 func _ready() -> void:
@@ -31,7 +39,7 @@ func _physics_process(delta: float) -> void:
 	physics_update(getDistanceFromLowerBound(), getDistanceFromUpperBound())
 
 func physics_update(distance_from_lower_bound: float, distance_from_upper_bound: float) -> void:
-	if not isActive:
+	if not is_active:
 		return
 	
 	# Paddle bounce logic
