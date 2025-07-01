@@ -17,7 +17,6 @@ zoom = Vector2(7, 7)
 [node name="Ball" parent="." node_paths=PackedStringArray("paddles", "arena") instance=ExtResource("4_28aoi")]
 paddles = NodePath("../Paddles")
 arena = NodePath("../Arena")
-start_speed = 1.0
 
 [node name="Paddles" type="Node" parent="."]
 
