@@ -11,7 +11,7 @@ var current_speed: float = start_speed
 var velocity: Vector2 = Vector2.ZERO
 var paddlesBeingCollidedWith: Array[Paddle] = []
 
-func start(shouldStartLeft: bool) -> void:
+func restart(shouldStartLeft: bool) -> void:
 	paddlesBeingCollidedWith = []
 	var start_position: Vector2 = Vector2.ZERO
 	if arena:
@@ -25,12 +25,12 @@ func start(shouldStartLeft: bool) -> void:
 	current_speed = start_speed
 
 func _ready() -> void:
-	start(randf() < 0.5)
+	restart(randf() < 0.5)
 
 func _physics_process(delta: float) -> void:
-	update(getDistanceFromLowerBound(), getDistanceFromUpperBound())
+	physics_update(getDistanceFromLowerBound(), getDistanceFromUpperBound())
 
-func update(distance_from_lower_bound: float, distance_from_upper_bound: float) -> void:
+func physics_update(distance_from_lower_bound: float, distance_from_upper_bound: float) -> void:
 	if not isActive:
 		return
 	

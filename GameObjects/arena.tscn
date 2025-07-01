@@ -10,7 +10,6 @@ specular_color = Color(0.460172, 0.233411, 0.453389, 1)
 
 [node name="Arena" type="Node2D"]
 script = ExtResource("1_ti48c")
-arena_range_in_pixels = 90
 
 [node name="Wall" type="StaticBody2D" parent="."]
 
