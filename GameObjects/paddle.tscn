@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://b53hcff8gnb10"]
 
-[ext_resource type="Script" uid="uid://dak2v0xpp6j7c" path="res://paddle.gd" id="1_tbytw"]
+[ext_resource type="Script" uid="uid://dak2v0xpp6j7c" path="res://GameObjects/paddle.gd" id="1_tbytw"]
 [ext_resource type="PackedScene" uid="uid://bxm45k22yx15g" path="res://Controllers/CharacterController.tscn" id="2_r112f"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ut3sq"]
