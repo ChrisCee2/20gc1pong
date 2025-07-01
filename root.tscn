@@ -24,7 +24,7 @@ arena = NodePath("../Arena")
 
 [node name="Paddle" parent="Paddles" node_paths=PackedStringArray("characterInput", "arena") instance=ExtResource("1_pq8q7")]
 position = Vector2(-70, 0)
-isLeft = true
+facing_direction = Vector2(1, 0)
 characterInput = NodePath("CharacterInput")
 arena = NodePath("../../Arena")
 
@@ -34,6 +34,7 @@ downKey = "paddle_down_1"
 
 [node name="Paddle1" parent="Paddles" node_paths=PackedStringArray("characterInput", "arena") instance=ExtResource("1_pq8q7")]
 position = Vector2(70, 0)
+facing_direction = Vector2(-1, 0)
 characterInput = NodePath("CharacterInput")
 arena = NodePath("../../Arena")
 

@@ -86,7 +86,7 @@ func handlePaddleBounce() -> void:
 				var angle = deg_to_rad(paddle.getBounceAngle(global_position))
 				var x = cos(angle)
 				var y = sin(angle)
-				velocity = Vector2(direction_x * x, y) * start_speed
+				velocity = paddle.get_bounce_direction(global_position) * start_speed;
 	paddlesBeingCollidedWith = collidingPaddles
 
 func getDistanceFromUpperBound() -> float:
