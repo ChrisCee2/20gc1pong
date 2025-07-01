@@ -6,6 +6,7 @@ class_name Ball extends StaticBody2D
 @onready var sprite: Sprite2D = $Sprite2D
 
 var isActive: bool = false
+var current_speed: float = start_speed
 var velocity: Vector2 = Vector2.ZERO
 
 
@@ -19,6 +20,7 @@ func start(shouldStartLeft: bool) -> void:
 	var y = sin(angle) * (-1 if randf() < 0.5 else 1)
 	velocity = start_speed * Vector2(x, y).normalized()
 	isActive = true
+	current_speed = start_speed
 
 func _ready() -> void:
 	start(randf() < 0.5)
@@ -33,11 +35,18 @@ func update(distance_from_lower_bound: float, distance_from_upper_bound: float) 
 	var curr_velocity = velocity
 	if distance_from_lower_bound <= 0 || distance_from_upper_bound <= 0:
 		velocity *= Vector2(1.0, -1.0)
+		velocity = velocity.normalized() * current_speed
 		curr_velocity = velocity
 	if velocity.y < 0:
-		curr_velocity.y = min(curr_velocity.y, distance_from_upper_bound)
+		var y = min(abs(curr_velocity.y), distance_from_upper_bound)
+		var factor = abs(curr_velocity.y) / y
+		curr_velocity /= factor
+		curr_velocity.y = -y
 	elif velocity.y > 0:
-		curr_velocity.y = min(curr_velocity.y, distance_from_lower_bound)
+		var y = min(curr_velocity.y, distance_from_lower_bound)
+		var factor = abs(curr_velocity.y) / y
+		curr_velocity /= factor
+		curr_velocity.y = y
 	global_position += curr_velocity
 
 func getBounceVelocity() -> Vector2:
