@@ -20,7 +20,7 @@ var is_paused = false
 var initial_score: Dictionary = {"Player 1": 0, "Player 2": 0}
 var score: Dictionary = initial_score.duplicate()
 var win_text = "%s Wins!"
-var return_to_menu_text = "[%s] to main menu"
+var return_to_menu_text = "[%s] to go back"
 
 func _ready() -> void:
 	pause_menu.hide()
