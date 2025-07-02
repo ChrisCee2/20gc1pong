@@ -14,6 +14,7 @@ class_name Game extends Node
 @export var return_to_menu_label: Label
 @export var pause_menu: Control
 
+var select_sfx: AudioStream = preload("res://Assets/SFX/PauseSelectSFX.wav")
 var is_started = false
 var game_ended = false
 var is_paused = false
@@ -28,6 +29,7 @@ func _ready() -> void:
 
 func update() -> void:
 	if game_ended and Input.is_action_just_released("return_to_menu"):
+		AudioManager.play_audio(select_sfx)
 		get_tree().change_scene_to_file("res://Menus/main_menu.tscn")
 	
 	if not game_ended and Input.is_action_just_pressed("pause"):
@@ -97,6 +99,7 @@ func reset() -> void:
 	update_scores()
 
 func pause() -> void:
+	AudioManager.play_audio(select_sfx)
 	is_paused = true
 	pause_menu.show()
 	# Resume player controls
@@ -104,6 +107,7 @@ func pause() -> void:
 		ball.stop()
 
 func resume() -> void:
+	AudioManager.play_audio(select_sfx)
 	is_paused = false
 	pause_menu.hide()
 	# Resume player controls
