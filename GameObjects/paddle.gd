@@ -3,7 +3,7 @@ class_name Paddle extends StaticBody2D
 @export var facing_direction: Vector2 = Vector2(0,0)
 @export var characterInput: CharacterInput
 @export var arena: Arena
-@export_range(1, 89) var maxBounceAngle: float = 70
+@export_range(1, 89) var maxBounceAngle: float = 60
 @onready var controller = $CharacterController
 
 @onready var sprite = $Sprite2D
