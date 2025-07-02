@@ -20,13 +20,14 @@ grow_vertical = 2
 script = ExtResource("1_ik086")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(200, 100)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.270588)
+color = Color(0, 0, 0, 0.486275)
 
 [node name="GridContainer" type="GridContainer" parent="."]
 layout_mode = 1
