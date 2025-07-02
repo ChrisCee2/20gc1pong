@@ -1,4 +1,4 @@
-class_name Root extends Node2D
+class_name Pong extends Node2D
 
 @onready var game: Game = $Game
 
