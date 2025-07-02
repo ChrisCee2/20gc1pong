@@ -5,3 +5,6 @@ class_name Pong extends Node2D
 
 func _process(delta: float) -> void:
 	game.update()
+
+func _physics_process(delta: float) -> void:
+	game.physics_update()

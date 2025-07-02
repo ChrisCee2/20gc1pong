@@ -12,12 +12,12 @@ func _ready() -> void:
 	if characterInput:
 		controller.input = characterInput
 
-func _process(delta):
+func update():
 	if controller and arena:
 		if controller.input != null:
 			controller.input.update()
 
-func _physics_process(delta: float) -> void:
+func physics_update() -> void:
 	if controller:
 		controller.update(getDistanceFromLowerBound(), getDistanceFromUpperBound())
 
