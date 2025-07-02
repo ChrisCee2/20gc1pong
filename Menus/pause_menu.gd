@@ -6,10 +6,13 @@ class_name PauseMenu extends Control
 @onready var back_button: Button = $GridContainer/BackButton
 
 var select_sfx: AudioStream = preload("res://Assets/SFX/PauseSelectSFX.wav")
+var hover_sfx: AudioStream = preload("res://Assets/SFX/PauseHoverSFX.wav")
 
 func _ready() -> void:
 	resume_button.pressed.connect(resume_game)
 	back_button.pressed.connect(return_to_main_menu)
+	resume_button.mouse_entered.connect(_on_enter)
+	back_button.mouse_entered.connect(_on_enter)
 
 func return_to_main_menu() -> void:
 	AudioManager.play_audio(select_sfx)
@@ -17,3 +20,6 @@ func return_to_main_menu() -> void:
 
 func resume_game() -> void:
 	game.resume()
+
+func _on_enter() -> void:
+	AudioManager.play_audio(hover_sfx)
