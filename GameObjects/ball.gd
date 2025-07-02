@@ -13,11 +13,9 @@ var paddlesBeingCollidedWith: Array[Paddle] = []
 
 func start():
 	is_active = true
-	show()
 
-func end():
+func stop():
 	is_active = false
-	hide()
 
 func restart(shouldStartLeft: bool) -> void:
 	paddlesBeingCollidedWith = []
