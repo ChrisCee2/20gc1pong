@@ -11,7 +11,7 @@ func _ready() -> void:
 	back_button.pressed.connect(return_to_main_menu)
 
 func return_to_main_menu() -> void:
-	print(get_tree().change_scene_to_file("res://Menus/main_menu.tscn"))
+	get_tree().change_scene_to_file("res://Menus/main_menu.tscn")
 
 func resume_game() -> void:
 	game.resume()
