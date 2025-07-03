@@ -1,5 +1,7 @@
 class_name Game extends Node
 
+signal new_round
+
 @export var score_to_win: int = 1
 
 @export_group("Game Objects")
@@ -61,6 +63,7 @@ func physics_update() -> void:
 
 func restart_round(shouldStartLeft: bool) -> void:
 	ball.restart(shouldStartLeft)
+	new_round.emit()
 
 func update_scores() -> void:
 	for child in scores.get_children():

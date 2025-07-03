@@ -13,20 +13,32 @@ var should_set_hit_position: bool = false
 var desired_hit_position: float = 0 # Where on paddle to hit the ball
 var should_set_rtc_error: bool = false
 var return_to_center_error: float = 0
-var ball_error: float = 0 # How many pixels it is ok for the paddle to be from the ball
 var min_move_amount: float = 4 # Minimum amount of pixels needed before moving paddle
 var should_move: bool = false
 var reacted: bool = false
 
 var reaction_speed = 0.26 # Reaction speed in seconds
-var delay_between_inputs: float = 0.1 # Time between inputs in seconds
 var reaction_timer_ended: bool = true
+
+var min_delay_between_inputs: float = 0.3 # Time between inputs in seconds
+var current_delay_between_inputs: float = min_delay_between_inputs
+var max_delay_between_inputs: float = 1.0
+var delay_increment: float = 0.05
 var input_timer_ended: bool = true
+
+var min_ball_error: float = 1
+var max_ball_error: float = 6
+var current_ball_error: float = min_ball_error
+var ball_error_increment: float = 0.5
+
+var ball_error: float = 0 # How many pixels it is ok for the paddle to be from the ball
 
 func _ready() -> void:
 	input_timer.timeout.connect(_input_timer_ended)
 	reaction_timer.timeout.connect(_reaction_timer_ended)
-	ball.bounce.connect(reset_reaction_timer)
+	ball.bounce_wall.connect(reset_reaction_timer)
+	ball.bounce_paddle.connect(reset_reaction_timer)
+	game.new_round.connect(reset)
 
 func update() -> void:
 	if not reaction_timer_ended or not input_timer_ended:
@@ -59,7 +71,7 @@ func update() -> void:
 		set_direction_to_target(distance_from_target)
 
 func set_direction_to_target(distance_from_target: int) -> void:
-	var error = ball_error if is_ball_coming() else return_to_center_error
+	var error = get_ball_error() if is_ball_coming() else return_to_center_error
 	if abs(distance_from_target) <= error:
 		isPressingUp = false
 		isPressingDown = false
@@ -85,7 +97,7 @@ func is_ball_coming() -> bool:
 func reset_input_timer() -> void:
 	input_timer_ended = false
 	input_timer.stop()
-	input_timer.start(delay_between_inputs)
+	input_timer.start(randf_range(min_delay_between_inputs, current_delay_between_inputs))
 
 func reset_reaction_timer() -> void:
 	reaction_timer_ended = false
@@ -97,3 +109,18 @@ func _input_timer_ended() -> void:
 
 func _reaction_timer_ended() -> void:
 	reaction_timer_ended = true
+
+func get_ball_error() -> float:
+	return randf_range(min_ball_error, current_ball_error)
+
+func reset() -> void:
+	current_ball_error = min_ball_error
+	current_delay_between_inputs = min_delay_between_inputs
+
+func _bounce_paddle() -> void:
+	reset_reaction_timer()
+	current_ball_error = min(current_ball_error + ball_error_increment, max_ball_error)
+	current_delay_between_inputs = min(
+		current_delay_between_inputs + delay_increment, 
+		max_delay_between_inputs
+	)

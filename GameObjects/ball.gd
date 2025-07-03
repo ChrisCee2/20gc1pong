@@ -1,6 +1,7 @@
 class_name Ball extends StaticBody2D
 
-signal bounce
+signal bounce_wall
+signal bounce_paddle
 
 @export var paddles: Node
 @export var arena: Arena
@@ -71,7 +72,7 @@ func handlePaddleBounce() -> void:
 		if paddle is Paddle and isBallOverlappingPaddle(paddle):
 			collidingPaddles.append(paddle)
 			if paddle not in paddlesBeingCollidedWith:
-				bounce.emit()
+				bounce_paddle.emit()
 				var direction_x = 1 if velocity.x < 0 else -1
 				var angle = deg_to_rad(paddle.getBounceAngle(global_position))
 				var x = cos(angle)
@@ -83,12 +84,12 @@ func handleWallBounce(
 	distance_from_lower_bound: float, 
 	distance_from_upper_bound: float) -> void:
 	if distance_from_lower_bound <= 0 || distance_from_upper_bound <= 0:
-		bounce.emit()
+		bounce_wall.emit()
 		velocity *= Vector2(1.0, -1.0)
 		velocity = velocity.normalized() * current_speed
 
 func scaleVelocityForWallBounce(current_velocity: Vector2, y: float) -> Vector2:
-	bounce.emit()
+	bounce_wall.emit()
 	var factor = abs(current_velocity.y) / y
 	current_velocity /= factor
 	current_velocity.y = -y
