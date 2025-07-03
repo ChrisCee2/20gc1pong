@@ -22,7 +22,7 @@ var score: Dictionary = initial_score.duplicate()
 var win_text = "%s Wins!"
 var return_to_menu_text = "[%s] to go back"
 
-func _ready() -> void:
+func start() -> void:
 	pause_menu.hide()
 	reset()
 

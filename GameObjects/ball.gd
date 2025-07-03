@@ -30,9 +30,6 @@ func restart(shouldStartLeft: bool) -> void:
 	start()
 	current_speed = start_speed
 
-func _ready() -> void:
-	restart(randf() < 0.5)
-
 func _physics_process(delta: float) -> void:
 	physics_update(getDistanceFromLowerBound(), getDistanceFromUpperBound())
 

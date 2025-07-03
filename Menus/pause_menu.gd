@@ -6,11 +6,12 @@ class_name PauseMenu extends Control
 @onready var back_button: Button = $GridContainer/BackButton
 
 func _ready() -> void:
+	hide()
 	resume_button.pressed.connect(resume_game)
 	back_button.pressed.connect(return_to_main_menu)
 
 func return_to_main_menu() -> void:
-	get_tree().change_scene_to_file("res://Menus/main_menu.tscn")
+	print(get_tree().change_scene_to_file("res://Menus/main_menu.tscn"))
 
 func resume_game() -> void:
 	game.resume()
