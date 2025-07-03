@@ -1,18 +1,31 @@
 class_name MainMenu extends Control
 
-@onready var start_button: Button = $GridContainer/StartButton
+@onready var singleplayer_button: Button = $GridContainer/SingleplayerButton
+@onready var multiplayer_button: Button = $GridContainer/MultiplayerButton
 @onready var exit_button: Button = $GridContainer/ExitButton
 
 var select_sfx: AudioStream = preload("res://Assets/SFX/MainSelectSFX.wav")
 var hover_sfx: AudioStream = preload("res://Assets/SFX/MainHoverSFX.wav")
 
 func _ready() -> void:
-	start_button.pressed.connect(start_game)
+	singleplayer_button.pressed.connect(start_singleplayer)
+	singleplayer_button.mouse_entered.connect(_on_enter)
+	
+	multiplayer_button.pressed.connect(start_multiplayer)
+	multiplayer_button.mouse_entered.connect(_on_enter)
+	
 	exit_button.pressed.connect(exit_game)
-	start_button.mouse_entered.connect(_on_enter)
 	exit_button.mouse_entered.connect(_on_enter)
 
-func start_game() -> void:
+func start_singleplayer() -> void:
+	AudioManager.play_audio(select_sfx)
+	var pong_scene = preload("res://Levels/pong.tscn").instantiate()
+	pong_scene.is_single_player = true
+	get_tree().root.add_child(pong_scene)
+	get_tree().current_scene = pong_scene
+	queue_free()
+
+func start_multiplayer() -> void:
 	AudioManager.play_audio(select_sfx)
 	get_tree().change_scene_to_file("res://Levels/pong.tscn")
 

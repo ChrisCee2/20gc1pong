@@ -9,6 +9,7 @@ var select_sfx: AudioStream = preload("res://Assets/SFX/PauseSelectSFX.wav")
 var hover_sfx: AudioStream = preload("res://Assets/SFX/PauseHoverSFX.wav")
 
 func _ready() -> void:
+	hide()
 	resume_button.pressed.connect(resume_game)
 	back_button.pressed.connect(return_to_main_menu)
 	resume_button.mouse_entered.connect(_on_enter)
