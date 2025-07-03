@@ -4,3 +4,7 @@
 
 [node name="ComputerInput" type="Node"]
 script = ExtResource("1_a4hav")
+
+[node name="ReactionTimer" type="Timer" parent="."]
+
+[node name="InputTimer" type="Timer" parent="."]
