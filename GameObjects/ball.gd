@@ -1,5 +1,8 @@
 class_name Ball extends StaticBody2D
 
+signal bounce_wall
+signal bounce_paddle
+
 @export var paddles: Node
 @export var arena: Arena
 @export var start_speed: float = 1.0
@@ -40,26 +43,15 @@ func physics_update(distance_from_lower_bound: float, distance_from_upper_bound:
 	if not is_active:
 		return
 	
-	# Paddle bounce logic
 	handlePaddleBounce()
-	
+	handleWallBounce(distance_from_lower_bound, distance_from_upper_bound)
 	var curr_velocity = velocity
 	
-	# Wall bounce logic
-	if distance_from_lower_bound <= 0 || distance_from_upper_bound <= 0:
-		velocity *= Vector2(1.0, -1.0)
-		velocity = velocity.normalized() * current_speed
-		curr_velocity = velocity
-	if velocity.y < 0:
-		var y = min(abs(curr_velocity.y), distance_from_upper_bound)
-		var factor = abs(curr_velocity.y) / y
-		curr_velocity /= factor
-		curr_velocity.y = -y
-	elif velocity.y > 0:
-		var y = min(curr_velocity.y, distance_from_lower_bound)
-		var factor = abs(curr_velocity.y) / y
-		curr_velocity /= factor
-		curr_velocity.y = y
+	# If approaching wall and velocity would make it pass wall, make it not
+	if velocity.y < 0 and distance_from_upper_bound < curr_velocity.y:
+		curr_velocity = scaleVelocityForWallBounce(curr_velocity, distance_from_upper_bound)
+	elif velocity.y > 0 and velocity.y < 0 and distance_from_lower_bound < curr_velocity.y:
+		curr_velocity = scaleVelocityForWallBounce(curr_velocity, distance_from_lower_bound)
 	global_position += curr_velocity
 
 func getBounceVelocity() -> Vector2:
@@ -80,12 +72,28 @@ func handlePaddleBounce() -> void:
 		if paddle is Paddle and isBallOverlappingPaddle(paddle):
 			collidingPaddles.append(paddle)
 			if paddle not in paddlesBeingCollidedWith:
+				bounce_paddle.emit()
 				var direction_x = 1 if velocity.x < 0 else -1
 				var angle = deg_to_rad(paddle.getBounceAngle(global_position))
 				var x = cos(angle)
 				var y = sin(angle)
 				velocity = paddle.get_bounce_direction(global_position) * start_speed;
 	paddlesBeingCollidedWith = collidingPaddles
+
+func handleWallBounce(
+	distance_from_lower_bound: float, 
+	distance_from_upper_bound: float) -> void:
+	if distance_from_lower_bound <= 0 || distance_from_upper_bound <= 0:
+		bounce_wall.emit()
+		velocity *= Vector2(1.0, -1.0)
+		velocity = velocity.normalized() * current_speed
+
+func scaleVelocityForWallBounce(current_velocity: Vector2, y: float) -> Vector2:
+	bounce_wall.emit()
+	var factor = abs(current_velocity.y) / y
+	current_velocity /= factor
+	current_velocity.y = -y
+	return current_velocity
 
 func getDistanceFromUpperBound() -> float:
 	if not arena:

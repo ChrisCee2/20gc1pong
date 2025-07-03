@@ -1,5 +1,7 @@
 class_name Game extends Node
 
+signal new_round
+
 @export var score_to_win: int = 1
 
 @export_group("Game Objects")
@@ -22,7 +24,7 @@ var score: Dictionary = initial_score.duplicate()
 var win_text = "%s Wins!"
 var return_to_menu_text = "[%s] to go back"
 
-func _ready() -> void:
+func start() -> void:
 	pause_menu.hide()
 	reset()
 
@@ -61,6 +63,7 @@ func physics_update() -> void:
 
 func restart_round(shouldStartLeft: bool) -> void:
 	ball.restart(shouldStartLeft)
+	new_round.emit()
 
 func update_scores() -> void:
 	for child in scores.get_children():

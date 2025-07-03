@@ -1,6 +1,6 @@
 class_name CharacterController extends Node
 
-@export var input: CharacterInput
+@export var input: InputInterface
 @export var object: StaticBody2D
 @export var velocity = 1
 
