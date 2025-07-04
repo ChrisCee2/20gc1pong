@@ -2,7 +2,7 @@ class_name Game extends Node
 
 signal new_round
 
-@export var score_to_win: int = 1
+@export var score_to_win: int = 2
 
 @export_group("Game Objects")
 @export var ball: Ball
@@ -15,6 +15,10 @@ signal new_round
 @export var win_label: Label
 @export var return_to_menu_label: Label
 @export var pause_menu: Control
+
+var select_sfx: AudioStream = preload("res://Assets/SFX/PauseSelectSFX.wav")
+var score_sfx: AudioStream = preload("res://Assets/SFX/ScoreSFX.wav")
+var win_tune: AudioStream = preload("res://Assets/SFX/WinTune.wav")
 
 var is_started = false
 var game_ended = false
@@ -30,6 +34,7 @@ func start() -> void:
 
 func update() -> void:
 	if game_ended and Input.is_action_just_released("return_to_menu"):
+		AudioManager.play_audio(select_sfx)
 		get_tree().change_scene_to_file("res://Menus/main_menu.tscn")
 	
 	if not game_ended and Input.is_action_just_pressed("pause"):
@@ -40,9 +45,8 @@ func update() -> void:
 			if paddle is Paddle:
 				paddle.update()
 	
-	var potential_winner: String = get_winner()
-	if potential_winner != "":
-		end(potential_winner)
+	if not is_started:
+		return
 	
 	var bound: int = arena.isOutOfBoundsX(ball.global_position, ball.getSize())
 	if bound == 0:
@@ -52,8 +56,14 @@ func update() -> void:
 	elif bound == -1:
 		score["Player 2"] += 1
 	update_scores()
-	var shouldStartLeft: bool = true if bound == -1 else false
-	restart_round(shouldStartLeft)
+	
+	var potential_winner: String = get_winner()
+	if potential_winner != "":
+		end(potential_winner)
+	else:
+		AudioManager.play_audio(score_sfx)
+		var shouldStartLeft: bool = true if bound == -1 else false
+		restart_round(shouldStartLeft)
 
 func physics_update() -> void:
 	if not is_paused:
@@ -80,6 +90,7 @@ func get_winner() -> String:
 	return ""
 
 func end(winner: String) -> void:
+	AudioManager.play_audio(win_tune)
 	ui_control.show()
 	var return_to_menu_key: String = "Space"
 	win_label.text = win_text % winner
@@ -100,6 +111,7 @@ func reset() -> void:
 	update_scores()
 
 func pause() -> void:
+	AudioManager.play_audio(select_sfx)
 	is_paused = true
 	pause_menu.show()
 	# Resume player controls
@@ -107,6 +119,7 @@ func pause() -> void:
 		ball.stop()
 
 func resume() -> void:
+	AudioManager.play_audio(select_sfx)
 	is_paused = false
 	pause_menu.hide()
 	# Resume player controls
