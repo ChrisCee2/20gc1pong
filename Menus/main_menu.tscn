@@ -8,6 +8,7 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_at0u2"]
 
 [node name="MainMenu" type="Control"]
+texture_filter = 1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,6 +18,7 @@ grow_vertical = 2
 script = ExtResource("1_7vrkn")
 
 [node name="GridContainer" type="GridContainer" parent="."]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -32,7 +34,7 @@ grow_vertical = 2
 theme_override_constants/v_separation = 40
 
 [node name="SingleplayerButton" type="Button" parent="GridContainer"]
-texture_filter = 5
+texture_filter = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_fu7sn")
 theme_override_font_sizes/font_size = 63
@@ -50,7 +52,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_p3jrs")
 text = "Singleplayer"
 
 [node name="MultiplayerButton" type="Button" parent="GridContainer"]
-texture_filter = 5
+texture_filter = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_fu7sn")
 theme_override_font_sizes/font_size = 63
@@ -68,7 +70,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_p3jrs")
 text = "Multiplayer"
 
 [node name="ExitButton" type="Button" parent="GridContainer"]
-texture_filter = 5
+texture_filter = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_fu7sn")
 theme_override_font_sizes/font_size = 63

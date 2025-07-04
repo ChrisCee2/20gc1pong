@@ -124,6 +124,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="WinControl" type="Control" parent="."]
+texture_filter = 1
 layout_mode = 3
 anchors_preset = 0
 offset_left = -82.3
@@ -132,6 +133,7 @@ offset_right = 82.3
 offset_bottom = 46.3
 
 [node name="GridContainer" type="GridContainer" parent="WinControl"]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -146,7 +148,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="WinLabel" type="Label" parent="WinControl/GridContainer"]
-texture_filter = 5
+texture_filter = 1
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("7_a70rt")
@@ -155,7 +157,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ReturnToMenuLabel" type="Label" parent="WinControl/GridContainer"]
-texture_filter = 5
+texture_filter = 1
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("7_a70rt")
