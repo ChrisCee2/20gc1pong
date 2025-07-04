@@ -4,6 +4,7 @@ signal bounce_wall
 signal bounce_paddle
 
 @export var paddles: Node
+@export var game: Game
 @export var arena: Arena
 @export var start_speed: float = 1.0
 
@@ -55,7 +56,7 @@ func physics_update(distance_from_lower_bound: float, distance_from_upper_bound:
 		curr_velocity = scaleVelocityForWallBounce(curr_velocity, distance_from_upper_bound)
 	elif velocity.y > 0 and velocity.y < 0 and distance_from_lower_bound < curr_velocity.y:
 		curr_velocity = scaleVelocityForWallBounce(curr_velocity, distance_from_lower_bound)
-	global_position += curr_velocity
+	global_position += curr_velocity * game.current_speed_multiplier
 
 func getBounceVelocity() -> Vector2:
 	return Vector2.ZERO

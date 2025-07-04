@@ -2,6 +2,7 @@ class_name Paddle extends StaticBody2D
 
 @export var facing_direction: Vector2 = Vector2(0,0)
 @export var characterInput: InputInterface
+@export var game: Game
 @export var arena: Arena
 @export_range(1, 89) var maxBounceAngle: float = 60
 @onready var controller = $CharacterController
@@ -22,7 +23,10 @@ func update():
 
 func physics_update() -> void:
 	if controller:
-		controller.update(getDistanceFromLowerBound(), getDistanceFromUpperBound())
+		controller.update(
+			game.current_speed_multiplier,
+			getDistanceFromLowerBound(), 
+			getDistanceFromUpperBound())
 
 func getSize() -> Vector2:
 	return sprite.scale
