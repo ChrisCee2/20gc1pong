@@ -2,7 +2,7 @@ class_name Game extends Node
 
 signal new_round
 
-@export var score_to_win: int = 2
+@export var score_to_win: int = 3
 
 @export_group("Game Objects")
 @export var ball: Ball
