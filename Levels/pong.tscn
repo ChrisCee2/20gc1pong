@@ -18,26 +18,29 @@ zoom = Vector2(7, 7)
 
 [node name="Arena" parent="." instance=ExtResource("2_axg6w")]
 
-[node name="Ball" parent="." node_paths=PackedStringArray("paddles", "arena") instance=ExtResource("3_7rnn0")]
+[node name="Ball" parent="." node_paths=PackedStringArray("paddles", "game", "arena") instance=ExtResource("3_7rnn0")]
 paddles = NodePath("../Paddles")
+game = NodePath("../Game")
 arena = NodePath("../Arena")
 
 [node name="Paddles" type="Node" parent="."]
 
-[node name="Paddle" parent="Paddles" node_paths=PackedStringArray("characterInput", "arena") instance=ExtResource("4_5qs3y")]
+[node name="Paddle" parent="Paddles" node_paths=PackedStringArray("characterInput", "game", "arena") instance=ExtResource("4_5qs3y")]
 position = Vector2(-70, 0)
 facing_direction = Vector2(1, 0)
 characterInput = NodePath("CharacterInput")
+game = NodePath("../../Game")
 arena = NodePath("../../Arena")
 
 [node name="CharacterInput" parent="Paddles/Paddle" instance=ExtResource("5_4clcx")]
 upKey = "paddle_up_1"
 downKey = "paddle_down_1"
 
-[node name="Paddle1" parent="Paddles" node_paths=PackedStringArray("characterInput", "arena") instance=ExtResource("4_5qs3y")]
+[node name="Paddle1" parent="Paddles" node_paths=PackedStringArray("characterInput", "game", "arena") instance=ExtResource("4_5qs3y")]
 position = Vector2(70, 0)
 facing_direction = Vector2(-1, 0)
 characterInput = NodePath("CharacterInput")
+game = NodePath("../../Game")
 arena = NodePath("../../Arena")
 
 [node name="CharacterInput" parent="Paddles/Paddle1" instance=ExtResource("5_4clcx")]

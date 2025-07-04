@@ -32,8 +32,13 @@ var score: Dictionary = initial_score.duplicate()
 var win_text = "%s Wins!"
 var return_to_menu_text = "[%s] to go back"
 
+var paddle_hits: int = 0
+var speed_multiplier: float = 1.0
+var current_speed_multiplier: float = speed_multiplier
+
 func _ready() -> void:
-	round_timer.timeout.connect(on_round_timer_ended)
+	round_timer.timeout.connect(_on_round_timer_ended)
+	ball.bounce_paddle.connect(_on_paddle_hit)
 
 func start() -> void:
 	pause_menu.hide()
@@ -113,6 +118,8 @@ func reset() -> void:
 	update_scores()
 
 func restart_round(shouldStartLeft: bool) -> void:
+	paddle_hits = 0
+	current_speed_multiplier = speed_multiplier
 	ball.restart(shouldStartLeft)
 	ball.stop()
 	round_timer.start(round_start_time)
@@ -139,7 +146,14 @@ func resume() -> void:
 	if not game_ended and round_timer.time_left == 0:
 		ball.start()
 
-func on_round_timer_ended() -> void:
+func _on_round_timer_ended() -> void:
 	round_timer.stop()
 	if not is_paused:
 		ball.start()
+
+func _on_paddle_hit() -> void:
+	paddle_hits += 1
+	if paddle_hits == 10:
+		current_speed_multiplier = 1.5
+	if paddle_hits == 20:
+		current_speed_multiplier = 2.0
