@@ -16,6 +16,9 @@ signal new_round
 @export var return_to_menu_label: Label
 @export var pause_menu: Control
 
+@onready var round_timer: Timer = $RoundTimer
+var round_start_time: float = 0.5
+
 var select_sfx: AudioStream = preload("res://Assets/SFX/PauseSelectSFX.wav")
 var score_sfx: AudioStream = preload("res://Assets/SFX/ScoreSFX.wav")
 var win_tune: AudioStream = preload("res://Assets/SFX/WinTune.wav")
@@ -23,10 +26,14 @@ var win_tune: AudioStream = preload("res://Assets/SFX/WinTune.wav")
 var is_started = false
 var game_ended = false
 var is_paused = false
+var round_ended = true
 var initial_score: Dictionary = {"Player 1": 0, "Player 2": 0}
 var score: Dictionary = initial_score.duplicate()
 var win_text = "%s Wins!"
 var return_to_menu_text = "[%s] to go back"
+
+func _ready() -> void:
+	round_timer.timeout.connect(on_round_timer_ended)
 
 func start() -> void:
 	pause_menu.hide()
@@ -71,10 +78,6 @@ func physics_update() -> void:
 			if paddle is Paddle:
 				paddle.physics_update()
 
-func restart_round(shouldStartLeft: bool) -> void:
-	ball.restart(shouldStartLeft)
-	new_round.emit()
-
 func update_scores() -> void:
 	for child in scores.get_children():
 		if child is Control:
@@ -102,7 +105,6 @@ func end(winner: String) -> void:
 
 func reset() -> void:
 	ui_control.hide()
-	ball.start()
 	ball.show()
 	restart_round(randf() < 0.5)
 	is_started = true
@@ -110,10 +112,20 @@ func reset() -> void:
 	score = initial_score.duplicate()
 	update_scores()
 
+func restart_round(shouldStartLeft: bool) -> void:
+	ball.restart(shouldStartLeft)
+	ball.stop()
+	round_timer.start(round_start_time)
+	new_round.emit()
+
+func start_round() -> void:
+	ball.start()
+
 func pause() -> void:
 	AudioManager.play_audio(select_sfx)
 	is_paused = true
 	pause_menu.show()
+	round_timer.paused = true
 	# Resume player controls
 	if not game_ended:
 		ball.stop()
@@ -122,6 +134,12 @@ func resume() -> void:
 	AudioManager.play_audio(select_sfx)
 	is_paused = false
 	pause_menu.hide()
+	round_timer.paused = false
 	# Resume player controls
-	if not game_ended:
+	if not game_ended and round_timer.time_left == 0:
+		ball.start()
+
+func on_round_timer_ended() -> void:
+	round_timer.stop()
+	if not is_paused:
 		ball.start()
